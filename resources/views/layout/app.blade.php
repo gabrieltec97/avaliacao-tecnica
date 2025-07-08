@@ -19,10 +19,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Meus contatos</a>
+                <a class="nav-link" href="{{ route('contatos.index') }}">Meus contatos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Novo contato</a>
+                <a class="nav-link" href="{{ route('contatos.create') }}">Novo contato</a>
             </li>
         </ul>
     </div>
