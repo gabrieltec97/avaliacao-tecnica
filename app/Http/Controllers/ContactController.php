@@ -28,15 +28,16 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-//        $validated = $request->validate([
-//            'contactName' => 'required|string|max:255',
-//            'contactPhone' => 'required|string|max:255',
-//            'contactEmail' => 'required|email|unique:contacts,email',
-//            'contactCep' => 'required|string|max:255',
-//        ]);
-//
-//        Contact::create($validated);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|email',
+            'cep' => 'required|string|max:255',
+        ]);
 
+        Contact::create($validated);
+
+        return redirect()->route('contatos.index');
     }
 
     /**
