@@ -20,27 +20,27 @@
                     </div>
                     <div class="card-body pb-2">
                         <div class="container-fluid">
-                            <form action="#" method="post" id="#">
+                            <form action="{{ route('contatos.store') }}" method="post">
                                 @csrf
                                 <div class="row pb-2">
                                     <div class="col-12 col-md-3 first-item">
                                         <span class="font-weight-bold modal-label">Nome:</span>
-                                        <input type="text" name="contactName" placeholder="Digite o nome" class="form-control mt-2" required>
+                                        <input type="text" name="name" placeholder="Digite o nome" class="form-control mt-2"  required>
                                     </div>
 
                                     <div class="col-12 col-md-3 mt-3 mt-lg-0">
                                         <span class="font-weight-bold modal-label">Telefone:</span>
-                                        <input type="tel" name="contactPhone" placeholder="Digite o telefone" class="form-control mt-2" required>
+                                        <input type="tel" name="phone" placeholder="Digite o telefone" class="form-control mt-2"  required>
                                     </div>
 
                                     <div class="col-12 col-md-3 mt-3 mt-lg-0">
                                         <span class="font-weight-bold modal-label">E-mail:</span>
-                                        <input type="email" name="contactPhone" placeholder="Digite o e-mail" class="form-control mt-2" required>
+                                        <input type="email" name="email" placeholder="Digite o e-mail" class="form-control mt-2"  required>
                                     </div>
 
                                     <div class="col-12 col-md-3 mt-3 mt-lg-0">
                                         <span class="font-weight-bold modal-label">Cep:</span>
-                                        <input type="text" name="contactPhone" placeholder="Digite o cep" class="form-control mt-2" required>
+                                        <input type="text" name="cep" placeholder="Digite o cep" class="form-control mt-2"  required>
                                     </div>
 
                                     <div class="col-12 mt-3 d-flex justify-content-end">
