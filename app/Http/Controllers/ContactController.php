@@ -93,8 +93,8 @@ class ContactController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
+            'name' => 'required|string|max:100',
+            'phone' => 'required|string|max:14',
             'email' => 'required|email|unique:contacts,email',
             'cep' => ['required', 'string']
         ]);
