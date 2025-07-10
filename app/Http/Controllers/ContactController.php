@@ -75,6 +75,10 @@ class ContactController extends Controller
      */
     public function destroy(string $id)
     {
+        $contact = Contact::findOrFail($id);
+        $contact->delete();
 
+        return redirect()->route('contatos.index')
+            ->with('msg-success', 'Contato deletado com sucesso!');
     }
 }
