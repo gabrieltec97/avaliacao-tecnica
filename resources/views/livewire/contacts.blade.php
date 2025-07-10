@@ -43,4 +43,23 @@
             </tbody>
         </table>
     </div>
+
+    @if(session('msg-success'))
+        <script>
+            const notyf = new Notyf({
+                position: {
+                    x: 'right',
+                    y: 'top',
+                }
+            });
+
+            notyf
+                .success({
+                    message: '{{ session('msg-success') }}',
+                    dismissible: true,
+                    duration: 4000
+                });
+        </script>
+    @endif
+
 </div>

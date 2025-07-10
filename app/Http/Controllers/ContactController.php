@@ -67,7 +67,7 @@ class ContactController extends Controller
         $contact->update($validated);
 
         return redirect()->route('contatos.index')
-            ->with('success', 'Contato atualizado com sucesso!');
+            ->with('msg-success', 'Contato atualizado com sucesso!');
     }
 
     /**
