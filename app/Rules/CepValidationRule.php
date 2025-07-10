@@ -18,8 +18,7 @@ class CepValidationRule implements ValidationRule
             return;
         }
 
-        // Inserindo os valores em cache para evitar multiplas requisições
-        // e otimização de tempo.
+
         $cacheKey = 'cep_validation_' . $cep;
         $data = Cache::get($cacheKey);
 

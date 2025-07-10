@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Rules\CepValidationRule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class ContactController extends Controller
@@ -33,9 +34,43 @@ class ContactController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
-            'email' => 'required|email',
-            'cep' => ['required', 'string', new CepValidationRule()],
+            'email' => 'required|email|unique:contacts,email',
+            'cep' => 'required', 'string'
         ]);
+
+        $cepClean = preg_replace('/[^0-9]/', '', $validated['cep']);
+
+        // Inserindo os valores em cache para evitar multiplas requisições
+        // e otimização de tempo.
+        $addressData = null;
+        $cacheKey = 'cep_address_' . $cepClean;
+
+        $addressData = Cache::get($cacheKey);
+
+        if ($addressData === null) {
+            try {
+                $response = Http::timeout(5)->get("https://viacep.com.br/ws/{$cepClean}/json/");
+                $addressData = $response->json();
+
+                if (isset($addressData['erro']) && ($addressData['erro'] === true || $addressData['erro'] === 'true')) {
+                    return back()->withErrors(['cep' => 'O CEP informado não é válido ou não foi encontrado.'])
+                        ->withInput();
+                }
+
+                Cache::put($cacheKey, $addressData, now()->addHours(24));
+
+            } catch (\Exception $e) {
+                return back()->withErrors(['cep' => 'Não foi possível validar o CEP no momento. Tente novamente mais tarde.'])
+                    ->withInput();
+            }
+        } else {
+            if (isset($addressData['erro']) && ($addressData['erro'] === true || $addressData['erro'] === 'true')) {
+                return back()->withErrors(['cep' => 'O CEP informado não é válido ou não foi encontrado.'])
+                    ->withInput();
+            }
+        }
+
+        $validated['address'] = $addressData['logradouro'] ?? null;
 
         Contact::create($validated);
 
@@ -59,17 +94,49 @@ class ContactController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|email',
-            'phone' => 'required|string|max:20',
-            'cep'   => 'required|string|max:9',
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|email|unique:contacts,email',
+            'cep' => 'required', 'string'
         ]);
 
-        $contact = Contact::findOrFail($id);
+        $cepClean = preg_replace('/[^0-9]/', '', $validated['cep']);
+
+        // Inserindo os valores em cache para evitar multiplas requisições
+        // e otimização de tempo.
+        $addressData = null;
+        $cacheKey = 'cep_address_' . $cepClean;
+
+        $addressData = Cache::get($cacheKey);
+
+        if ($addressData === null) {
+            try {
+                $response = Http::timeout(5)->get("https://viacep.com.br/ws/{$cepClean}/json/");
+                $addressData = $response->json();
+
+                if (isset($addressData['erro']) && ($addressData['erro'] === true || $addressData['erro'] === 'true')) {
+                    return back()->withErrors(['cep' => 'O CEP informado não é válido ou não foi encontrado.'])
+                        ->withInput();
+                }
+
+                Cache::put($cacheKey, $addressData, now()->addHours(24));
+
+            } catch (\Exception $e) {
+                return back()->withErrors(['cep' => 'Não foi possível validar o CEP no momento. Tente novamente mais tarde.'])
+                    ->withInput();
+            }
+        } else {
+            if (isset($addressData['erro']) && ($addressData['erro'] === true || $addressData['erro'] === 'true')) {
+                return back()->withErrors(['cep' => 'O CEP informado não é válido ou não foi encontrado.'])
+                    ->withInput();
+            }
+        }
+
+        $validated['address'] = $addressData['logradouro'] ?? null;
+
         $contact->update($validated);
 
-        return redirect()->route('contatos.index')
-            ->with('msg-success', 'Contato atualizado com sucesso!');
+        return redirect()->route('contatos.index')->with('msg-success', 'Contato atualizado com sucesso!');
     }
 
     /**

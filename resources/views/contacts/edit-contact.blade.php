@@ -57,5 +57,43 @@
                 </div>
             </div>
         </div>
+
+        @if(session('msg-error'))
+            <script>
+                const notyf = new Notyf({
+                    position: {
+                        x: 'right',
+                        y: 'top',
+                    }
+                });
+
+                notyf
+                    .error({
+                        message: '{{ session('msg-error') }}',
+                        dismissible: true,
+                        duration: 4000
+                    });
+            </script>
+        @endif
+
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                <script>
+                    const notyf = new Notyf({
+                        position: {
+                            x: 'right',
+                            y: 'top',
+                        }
+                    });
+
+                    notyf
+                        .error({
+                            message: '{{ $error }}',
+                            dismissible: true,
+                            duration: 4000
+                        });
+                </script>
+            @endforeach
+        @endif
     </div>
 @endsection
