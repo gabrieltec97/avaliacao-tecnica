@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
-use App\Rules\CepValidationRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -97,7 +96,7 @@ class ContactController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|email|unique:contacts,email',
-            'cep' => 'required', 'string'
+            'cep' => ['required', 'string']
         ]);
 
         $cepClean = preg_replace('/[^0-9]/', '', $validated['cep']);
@@ -134,6 +133,7 @@ class ContactController extends Controller
 
         $validated['address'] = $addressData['logradouro'] ?? null;
 
+        $contact = Contact::findOrFail($id);
         $contact->update($validated);
 
         return redirect()->route('contatos.index')->with('msg-success', 'Contato atualizado com sucesso!');
