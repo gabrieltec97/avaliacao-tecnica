@@ -3,18 +3,15 @@
 @section('title', 'Novo contato')
 
 @section('content')
-    <div class="container-fluid mt-2">
+    <div class="container-fluid mt-3">
         <div class="row">
             <div class="col-12 mb-4">
                 <div class="card">
                     <div class="card-header pb-0">
                         <div class="row">
                             <!-- Coluna do título -->
-                            <div class="col-md-6 col-12 title-format">
+                            <div class="col-md-6 col-12 mb-3">
                                 <h5 class="mb-0">Novo contato</h5>
-                                <p class="text-sm mb-0">
-                                    <span class="font-weight-bold">Registre</span> um novo contato
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -44,9 +41,8 @@
                                     </div>
 
                                     <div class="col-12 mt-3 d-flex justify-content-end">
-                                        <button class="btn btn-primary" type="submit">
+                                        <button class="btn btn-custom" type="submit">
                                             <span class="button-text"><i class="fa-solid fa-circle-plus icon-format"></i> Cadastrar contato</span>
-                                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                         </button>
                                     </div>
                                 </div>

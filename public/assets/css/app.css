@@ -1,7 +1,15 @@
 #my-navbar{
-    background-color: #27D9C2;
+    background-color: #27D9C2 !important;
 }
 
 #edit-contact{
     text-decoration: none;
+}
+
+
+.btn-custom {
+    background-color: #27D9C2 !important;
+    color: #FFF !important;
+    font-weight: bold !important;
+    border: none;
 }

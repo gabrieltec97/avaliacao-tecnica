@@ -23,10 +23,25 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
+            'name' => 'required|string|max:100',
+            'phone' => 'required|string|max:14|unique:contacts,phone',
             'email' => 'required|email|unique:contacts,email',
-            'cep' => ['required', 'string']
+            'cep' => ['required', 'string', 'max:8']
+        ],[
+            'name.required' => 'O campo "Nome" é obrigatório',
+            'name.max' => 'O campo de nome pode ter no máximo 100 caracteres',
+
+            'phone.required' => 'O campo Telefone é obrigatório',
+            'phone.unique' => 'Este número de telefone já está cadastrado.',
+            'phone.max' => 'Número de telefone inválido',
+
+            'email.required' => 'O campo e-mail é obrigatório.',
+            'email.email' => 'O e-mail informado não é válido.',
+            'email.unique' => 'Este e-mail já está cadastrado.',
+
+            'cep.required' => 'O campo CEP é obrigatório.',
+            'cep.string' => 'O CEP deve ser uma sequência de caracteres.',
+            'cep.max' => 'O CEP deve ter no máximo 8 caracteres.',
         ]);
 
         $cepClean = preg_replace('/[^0-9]/', '', $validated['cep']);
@@ -82,56 +97,73 @@ class ContactController extends Controller
     {
         $contact = Contact::findOrFail($id);
         $mail = trim($request->email);
+        $phone = trim($request->phone);
         $checkMail = DB::table('contacts')->select('id', 'email')->where('email', $mail)->get();
+        $checkPhone = DB::table('contacts')->select('id', 'phone')->where('phone', $phone)->get();
 
-        if ($mail == $checkMail[0]->email){
-            if ($checkMail[0]->id == $id){
-                $validated = $request->validate([
-                    'name' => 'required|string|max:100',
-                    'phone' => 'required|string|max:14',
-                    'email' => 'required|email|',
-                    'cep' => ['required', 'string']
-                ]);
+        if ($checkMail->isNotEmpty() && $checkMail->first()->id != $id) {
+            return redirect()->back()->with('msg-error', 'Este endereço de e-mail já está sendo utilizado.');
+        }
 
-                $cepClean = preg_replace('/[^0-9]/', '', $validated['cep']);
+        if ($checkPhone->isNotEmpty() && $checkPhone->first()->id != $id) {
+            return redirect()->back()->with('msg-error', 'Este número de telefone já está sendo utilizado.');
+        }
 
-                // Inserindo os valores em cache para evitar múltiplas requisições e otimização de tempo.
-                $addressData = null;
-                $cacheKey = 'cep_address_' . $cepClean;
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'phone' => 'required|string|max:14',
+            'email' => 'required|email',
+            'cep' => ['required', 'string', 'max:8']
+        ],[
+            'name.required' => 'O campo "Nome" é obrigatório',
+            'name.max' => 'O campo de nome pode ter no máximo 100 caracteres',
 
-                $addressData = Cache::get($cacheKey);
+            'phone.required' => 'O campo Telefone é obrigatório',
+            'phone.max' => 'Número de telefone inválido',
 
-                if ($addressData === null) {
-                    try {
-                        $response = Http::timeout(5)->get("https://viacep.com.br/ws/{$cepClean}/json/");
-                        $addressData = $response->json();
+            'email.required' => 'O campo e-mail é obrigatório.',
+            'email.email' => 'O e-mail informado não é válido.',
 
-                        if (isset($addressData['erro']) && ($addressData['erro'] === true || $addressData['erro'] === 'true')) {
-                            return back()->withErrors(['cep' => 'O CEP informado não é válido ou não foi encontrado.'])
-                                ->withInput();
-                        }
+            'cep.required' => 'O campo CEP é obrigatório.',
+            'cep.string' => 'O CEP deve ser uma sequência de caracteres.',
+            'cep.max' => 'O CEP deve ter no máximo 8 caracteres.',
+        ]);
 
-                        Cache::put($cacheKey, $addressData, now()->addHours(24));
+        $cepClean = preg_replace('/[^0-9]/', '', $validated['cep']);
 
-                    } catch (\Exception $e) {
-                        return back()->withErrors(['cep' => 'Não foi possível validar o CEP no momento. Tente novamente mais tarde.'])
-                            ->withInput();
-                    }
-                } else {
-                    if (isset($addressData['erro']) && ($addressData['erro'] === true || $addressData['erro'] === 'true')) {
-                        return back()->withErrors(['cep' => 'O CEP informado não é válido ou não foi encontrado.'])
-                            ->withInput();
-                    }
+        // Inserindo os valores em cache para evitar múltiplas requisições e otimização de tempo.
+        $addressData = null;
+        $cacheKey = 'cep_address_' . $cepClean;
+
+        $addressData = Cache::get($cacheKey);
+
+        if ($addressData === null) {
+            try {
+                $response = Http::timeout(5)->get("https://viacep.com.br/ws/{$cepClean}/json/");
+                $addressData = $response->json();
+
+                if (isset($addressData['erro']) && ($addressData['erro'] === true || $addressData['erro'] === 'true')) {
+                    return back()->withErrors(['cep' => 'O CEP informado não é válido ou não foi encontrado.'])
+                        ->withInput();
                 }
 
-                $validated['address'] = $addressData['logradouro'] ?? null;
-                $contact->update($validated);
+                Cache::put($cacheKey, $addressData, now()->addHours(24));
 
-                return redirect()->route('contatos.index')->with('msg-success', 'Contato atualizado com sucesso!');
-            }else{
-                return redirect()->back()->with('msg-error', 'Este endereço de e-mail já está sendo utilizado.');
+            } catch (\Exception $e) {
+                return back()->withErrors(['cep' => 'Não foi possível validar o CEP no momento. Tente novamente mais tarde.'])
+                    ->withInput();
+            }
+        } else {
+            if (isset($addressData['erro']) && ($addressData['erro'] === true || $addressData['erro'] === 'true')) {
+                return back()->withErrors(['cep' => 'O CEP informado não é válido ou não foi encontrado.'])
+                    ->withInput();
             }
         }
+
+        $validated['address'] = $addressData['logradouro'] ?? null;
+        $contact->update($validated);
+
+        return redirect()->route('contatos.index')->with('msg-success', 'Contato atualizado com sucesso!');
     }
 
     public function destroy(string $id)
