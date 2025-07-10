@@ -13,3 +13,22 @@
     font-weight: bold !important;
     border: none;
 }
+
+.img-format{
+    height: 40px;
+    width: 40px;
+    margin-left: 12px;
+}
+
+.up-items{
+    font-weight: bold !important;
+    margin-left: 10px;
+}
+
+.second-item{
+    font-weight: bold !important;
+}
+
+.up-items:hover, .second-item:hover{
+    color: whitesmoke !important;
+}
