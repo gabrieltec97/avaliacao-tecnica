@@ -30,7 +30,7 @@
                             <h6 class="text-sm"><a href="{{ route('contatos.edit', $contact->id) }}">{{ $contact->cep }}</a></h6>
                         </td>
                         <td class="text-center align-middle">
-                            <span style="margin-right: 10px !important;"><a id="edit-contact" href="{{ route('contatos.edit', $contact->id) }}"><i class="fa-solid fa-pen"></i></span>
+{{--                            <span style="margin-right: 10px !important;"><a id="edit-contact" href="{{ route('contatos.edit', $contact->id) }}"><i class="fa-solid fa-pen"></i></span>--}}
                             <span data-bs-toggle="modal" data-bs-target="#deletecontact{{ $contact->id }}"><i class="fa-solid fa-trash-can text-danger"></i></span>
                         </td>
                     </tr>

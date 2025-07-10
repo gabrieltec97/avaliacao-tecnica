@@ -10,25 +10,16 @@ use Illuminate\Support\Facades\Http;
 
 class ContactController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return view('contacts.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('contacts.new-contact');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -40,8 +31,7 @@ class ContactController extends Controller
 
         $cepClean = preg_replace('/[^0-9]/', '', $validated['cep']);
 
-        // Inserindo os valores em cache para evitar multiplas requisições
-        // e otimização de tempo.
+        // Inserindo os valores em cache para evitar múltiplas requisições e otimização de tempo.
         $addressData = null;
         $cacheKey = 'cep_address_' . $cepClean;
 
@@ -77,9 +67,6 @@ class ContactController extends Controller
         return redirect()->route('contatos.index')->with('msg-success', 'Contato criado com sucesso!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $contact = Contact::find($id);
@@ -88,9 +75,6 @@ class ContactController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $contact = Contact::findOrFail($id);
@@ -108,8 +92,7 @@ class ContactController extends Controller
 
                 $cepClean = preg_replace('/[^0-9]/', '', $validated['cep']);
 
-                // Inserindo os valores em cache para evitar multiplas requisições
-                // e otimização de tempo.
+                // Inserindo os valores em cache para evitar múltiplas requisições e otimização de tempo.
                 $addressData = null;
                 $cacheKey = 'cep_address_' . $cepClean;
 
@@ -148,15 +131,12 @@ class ContactController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        $contact = Contact::findOrFail($id);
-        $contact->delete();
+        Contact::findOrFail($id)->delete();
 
-        return redirect()->route('contatos.index')
+        return redirect()
+            ->route('contatos.index')
             ->with('msg-success', 'Contato deletado com sucesso!');
     }
 }
