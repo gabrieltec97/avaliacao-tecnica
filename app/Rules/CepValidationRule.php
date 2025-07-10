@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class CepValidationRule implements ValidationRule
@@ -22,6 +23,12 @@ class CepValidationRule implements ValidationRule
             $fail('O campo :attribute deve conter 8 dígitos.');
             return;
         }
+
+        // Definindo uma chave única para o cache do CEP
+        $cacheKey = 'cep_validation_' . $cep;
+
+        // Tenta obter o resultado do cache
+        $data = Cache::get($cacheKey);
 
         try {
             $response = Http::get("https://viacep.com.br/ws/{$cep}/json/");
