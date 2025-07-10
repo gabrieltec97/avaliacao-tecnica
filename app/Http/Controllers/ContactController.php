@@ -26,7 +26,7 @@ class ContactController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|email|unique:contacts,email',
-            'cep' => 'required', 'string'
+            'cep' => ['required', 'string']
         ]);
 
         $cepClean = preg_replace('/[^0-9]/', '', $validated['cep']);
@@ -61,6 +61,9 @@ class ContactController extends Controller
         }
 
         $validated['address'] = $addressData['logradouro'] ?? null;
+        $validated['neighborhood'] = $addressData['bairro'] ?? null;
+        $validated['city'] = $addressData['localidade'] ?? null;
+        $validated['state'] = $addressData['uf'] ?? null;
 
         Contact::create($validated);
 

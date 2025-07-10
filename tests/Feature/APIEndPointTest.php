@@ -18,7 +18,10 @@ class APIEndPointTest extends TestCase
             'phone' => '11911111111',
             'email' => 'teste@test.com',
             'cep' => '01001-000',
-            'address' => 'Rua A',
+            'address' => 'Rua Teste',
+            'neighborhood' => 'Teste',
+            'city' => 'Teste',
+            'state' => 'RJ',
         ]);
 
         $response = $this->get(route('apiContacts'));

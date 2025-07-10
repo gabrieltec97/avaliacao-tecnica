@@ -14,7 +14,10 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->string('email')->unique();
             $table->string('cep');
-            $table->string('address')->nullable();
+            $table->string('address');
+            $table->string('neighborhood');
+            $table->string('city');
+            $table->string('state');
             $table->timestamps();
         });
     }

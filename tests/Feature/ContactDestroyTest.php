@@ -19,6 +19,9 @@ class ContactDestroyTest extends TestCase
             'email' => 'teste@test.com',
             'cep' => '01001-000',
             'address' => 'Rua Teste',
+            'neighborhood' => 'Teste',
+            'city' => 'Cidade Teste',
+            'state' => 'RJ',
         ]);
 
         $this->assertDatabaseHas('contacts', ['id' => $contact->id]);

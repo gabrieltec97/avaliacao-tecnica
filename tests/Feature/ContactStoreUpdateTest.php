@@ -20,8 +20,9 @@ class ContactStoreUpdateTest extends TestCase
             'viacep.com.br/*' => Http::response([
                 'cep' => '20000-000',
                 'logradouro' => 'Rua do Teste',
-                'bairro' => 'Centro',
-                'localidade' => 'Rio de Janeiro',
+                'bairro' => 'Bairro do Teste',
+                'localidade' => 'Cidade do Teste',
+                'uf' => 'Estado do Teste',
             ], 200),
         ]);
 
@@ -30,6 +31,9 @@ class ContactStoreUpdateTest extends TestCase
             'phone' => '21000000000',
             'email' => 'teste@test.com',
             'cep' => '20000-000',
+            'neighborhood' => 'Bairro do Teste',
+            'city' => 'Cidade do Teste',
+            'state' => 'Estado do Teste',
         ];
 
         $response = $this->post(route('contatos.store'), $contactData);
@@ -44,6 +48,9 @@ class ContactStoreUpdateTest extends TestCase
             'email' => 'teste@test.com',
             'cep' => '20000-000',
             'address' => 'Rua do Teste',
+            'neighborhood' => 'Bairro do Teste',
+            'city' => 'Cidade do Teste',
+            'state' => 'Estado do Teste',
         ]);
 
         $this->assertNotNull(Cache::get('cep_address_20000000'));
@@ -73,7 +80,10 @@ class ContactStoreUpdateTest extends TestCase
             'phone' => '11111111111',
             'email' => 'teste@test.com',
             'cep' => '00000-000',
-            'address' => 'Rua Existente'
+            'address' => 'Rua Existente',
+            'neighborhood' => 'Bairro do Teste',
+            'city' => 'Cidade do Teste',
+            'state' => 'Estado do Teste',
         ]);
 
         $response = $this->post(route('contatos.store'), [
@@ -81,6 +91,9 @@ class ContactStoreUpdateTest extends TestCase
             'phone' => '99999999999',
             'email' => 'teste@test.com',
             'cep' => '20000-000',
+            'neighborhood' => 'Bairro do Teste',
+            'city' => 'Cidade do Teste',
+            'state' => 'Estado do Teste',
         ]);
 
         $response->assertStatus(302);
@@ -103,6 +116,9 @@ class ContactStoreUpdateTest extends TestCase
             'phone' => '21000000000',
             'email' => 'teste@test.com',
             'cep' => '00000000',
+            'neighborhood' => 'Bairro do Teste',
+            'city' => 'Cidade do Teste',
+            'state' => 'Estado do Teste',
         ]);
 
         $response->assertRedirect();
@@ -126,8 +142,10 @@ class ContactStoreUpdateTest extends TestCase
             'phone' => '21987654321',
             'email' => 'joao.teste@example.com',
             'cep' => '20000-000',
+            'neighborhood' => 'Bairro do Teste',
+            'city' => 'Cidade do Teste',
+            'state' => 'Estado do Teste',
         ]);
-
 
         $response->assertRedirect();
         $response->assertSessionHasErrors(['cep']);
@@ -143,9 +161,10 @@ class ContactStoreUpdateTest extends TestCase
         $cacheKey = 'cep_address_' . $cepClean;
         $cachedAddressData = [
             'cep' => '20000-000',
-            'logradouro' => 'Rua Cache',
-            'localidade' => 'Rio de Janeiro',
-            'uf' => 'RJ'
+            'logradouro' => 'Rua Teste',
+            'bairro' => 'Bairro do Teste',
+            'localidade' => 'Cidade do Teste',
+            'uf' => 'Estado do Teste',
         ];
         Cache::put($cacheKey, $cachedAddressData, now()->addHours(24));
 
@@ -157,6 +176,9 @@ class ContactStoreUpdateTest extends TestCase
             'phone' => '21000000000',
             'email' => 'teste@test.com',
             'cep' => '20000-000',
+            'neighborhood' => 'Bairro do Teste',
+            'city' => 'Cidade do Teste',
+            'state' => 'Estado do Teste',
         ];
 
         $response = $this->post(route('contatos.store'), $contactData);
@@ -165,9 +187,10 @@ class ContactStoreUpdateTest extends TestCase
         $response->assertSessionHas('msg-success', 'Contato criado com sucesso!');
 
         $this->assertDatabaseHas('contacts', [
-            'name' => 'Teste Cache',
-            'email' => 'teste@test.com',
-            'address' => 'Rua Cache',
+            'address' => 'Rua Teste',
+            'neighborhood' => 'Bairro do Teste',
+            'city' => 'Cidade do Teste',
+            'state' => 'Estado do Teste',
         ]);
 
         // Verificando se o cache foi usado para evitar requisição externa
