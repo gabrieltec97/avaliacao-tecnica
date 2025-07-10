@@ -7,8 +7,8 @@
             <tr>
                 <th class="ps-2 text-start text-xxs font-weight-bolder opacity-7">Nome</th>
                 <th class="text-start text-xxs font-weight-bolder opacity-7">Telefone</th>
-                <th class= text-xxs font-weight-bolder opacity-7 ps-2">E-mail</th>
-                <th class="text-center text-xxs font-weight-bolder opacity-7">Cep</th>
+                <th class="text-xxs font-weight-bolder opacity-7 ps-2">E-mail</th>
+                <th class="text-xxs font-weight-bolder opacity-7">Cep</th>
                 <th class="text-center text-xxs font-weight-bolder opacity-7">Ações</th>
 
             </tr>
@@ -26,7 +26,7 @@
                         <td class="align-middle">
                             <h6 class="text-sm">{{ $contact->email }}</a></h6>
                         </td>
-                        <td class="text-center align-middle">
+                        <td class="align-middle">
                             <h6 class="text-sm">{{ $contact->cep }}</a></h6>
                         </td>
                         <td class="text-center align-middle">

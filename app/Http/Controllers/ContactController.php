@@ -24,7 +24,7 @@ class ContactController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'phone' => 'required|string|max:14|unique:contacts,phone',
+            'phone' => 'required|string|max:15|unique:contacts,phone',
             'email' => 'required|email|unique:contacts,email',
             'cep' => ['required', 'string', 'max:8']
         ],[
@@ -111,9 +111,9 @@ class ContactController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'phone' => 'required|string|max:14',
+            'phone' => 'required|string|max:15',
             'email' => 'required|email',
-            'cep' => ['required', 'string', 'max:8']
+            'cep' => ['required', 'string', 'max:9']
         ],[
             'name.required' => 'O campo "Nome" é obrigatório',
             'name.max' => 'O campo de nome pode ter no máximo 100 caracteres',
