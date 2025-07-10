@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Novo contato')
+@section('title', 'Edição de contato')
 
 @section('content')
     <div class="container-fluid mt-2">
@@ -11,7 +11,7 @@
                         <div class="row">
                             <!-- Coluna do título -->
                             <div class="col-md-6 col-12 title-format">
-                                <h5 class="mb-0">Novo contato</h5>
+                                <h5 class="mb-0">Editar contato</h5>
                                 <p class="text-sm mb-0">
                                     <span class="font-weight-bold">Registre</span> um novo contato
                                 </p>

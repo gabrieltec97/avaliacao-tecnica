@@ -75,6 +75,6 @@ class ContactController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
     }
 }
