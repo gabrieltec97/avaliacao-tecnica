@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('assets/app.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/ce85d57a8b.js" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/sweetAlert2/sweetAlert.js') }}"></script>
     <title>@yield('title')</title>
 
     @livewireStyles
