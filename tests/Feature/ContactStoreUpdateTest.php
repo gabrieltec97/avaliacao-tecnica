@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 use App\Models\Contact;
 
-class ContactStoreTest extends TestCase
+class ContactStoreUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -29,7 +29,7 @@ class ContactStoreTest extends TestCase
             'name' => 'Teste',
             'phone' => '21000000000',
             'email' => 'teste@test.com',
-            'cep' => '20000-000', // CEP fictício para o teste
+            'cep' => '20000-000',
         ];
 
         $response = $this->post(route('contatos.store'), $contactData);
@@ -43,7 +43,7 @@ class ContactStoreTest extends TestCase
             'phone' => '21000000000',
             'email' => 'teste@test.com',
             'cep' => '20000-000',
-            'address' => 'Rua do Teste', // O endereço deve ser preenchido pela resposta do ViaCEP
+            'address' => 'Rua do Teste',
         ]);
 
         $this->assertNotNull(Cache::get('cep_address_20000000'));
@@ -59,15 +59,13 @@ class ContactStoreTest extends TestCase
             'cep' => '',
         ]);
 
-        //Código de erro para falha
         $response->assertStatus(302);
-
         $response->assertSessionHasErrors(['name', 'phone', 'email', 'cep']);
 
         $this->assertDatabaseCount('contacts', 0);
     }
 
-    //Teste de e-mail duplicado
+    //Teste de e-mail duplicado.
     public function test_duplicated_email()
     {
         Contact::create([
@@ -78,7 +76,6 @@ class ContactStoreTest extends TestCase
             'address' => 'Rua Existente'
         ]);
 
-        // Testando salvar novo contato com o mesmo email
         $response = $this->post(route('contatos.store'), [
             'name' => 'Novo Nome',
             'phone' => '99999999999',
@@ -118,7 +115,6 @@ class ContactStoreTest extends TestCase
     //Teste de falha na comunicação com a API do ViaCep.
     public function test_communication_error()
     {
-        // 1. Simula uma falha na requisição HTTP (ex: timeout, servidor offline)
         Http::fake([
             'viacep.com.br/*' => Http::response([
                 'erro' => true
@@ -132,14 +128,15 @@ class ContactStoreTest extends TestCase
             'cep' => '20000-000',
         ]);
 
-        // Verifica se foi redirecionado de volta com erros
+
         $response->assertRedirect();
         $response->assertSessionHasErrors(['cep']);
         $response->assertSessionHas('errors');
-        $this->assertDatabaseCount('contacts', 0); // Nenhum contato deve ser criado
+
+        $this->assertDatabaseCount('contacts', 0);
     }
 
-    //Teste de uso de endereço já em cache
+    //Teste de uso de endereço já em cache.
     public function test_cache_address()
     {
         $cepClean = '20000000';
