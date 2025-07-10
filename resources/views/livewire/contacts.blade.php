@@ -9,6 +9,8 @@
                 <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Telefone</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">E-mail</th>
                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cep</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ações</th>
+
             </tr>
             </thead>
             <tbody>
@@ -16,7 +18,7 @@
                 @foreach($contacts as $contact)
                     <tr>
                         <td class="ps-2 align-middle">
-                            <h6 class="text-sm"><a href="{{ route('contatos.show', $contact->id) }}">#{{ $contact->name }}</a></h6>
+                            <h6 class="text-sm"><a href="{{ route('contatos.show', $contact->id) }}">{{ $contact->name }}</a></h6>
                         </td>
                         <td class="align-middle">
                             <h6 class="text-sm"><a href="{{ route('contatos.show', $contact->id) }}">{{ $contact->phone }}</a></h6>
@@ -26,6 +28,10 @@
                         </td>
                         <td class="text-center align-middle">
                             <h6 class="text-sm"><a href="{{ route('contatos.show', $contact->id) }}">{{ $contact->cep }}</a></h6>
+                        </td>
+                        <td class="text-center align-middle">
+                            <a id="edit-contact" href="{{ route('contatos.show', $contact->id) }}"><i class="fa-solid fa-pen"></i>
+                            <span><i class="fa-solid fa-trash-can text-danger"></i></span>
                         </td>
                     </tr>
                 @endforeach
