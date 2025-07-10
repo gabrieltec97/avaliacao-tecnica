@@ -61,5 +61,4 @@
                 });
         </script>
     @endif
-
 </div>
