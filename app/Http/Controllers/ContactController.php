@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Rules\CepValidationRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -33,18 +34,8 @@ class ContactController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|email',
-            'cep' => 'required|string|max:255',
+            'cep' => ['required', 'string', new CepValidationRule()],
         ]);
-
-        // Chama a API ViaCEP
-        $cepResponse = Http::get("https://viacep.com.br/ws/{$validated['cep']}/json/");
-
-        // Verifica se o CEP é inválido
-        if (isset($cepResponse['erro'])){
-            return back()->with('msg-error', 'Não foi possível validar este cep. Digite um cep válido.')->withInput();
-        }elseif ($cepResponse->failed()){
-            return back()->with('msg-error', 'Falha ao fazer a validação do cep. Contate o administrador do sistema.')->withInput();
-        }
 
         Contact::create($validated);
 
