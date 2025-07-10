@@ -17,7 +17,7 @@
                     </div>
                     <div class="card-body pb-2">
                         <div class="container-fluid">
-
+                            @livewire('contacts')
                         </div>
                     </div>
                 </div>
