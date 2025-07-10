@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Novo contato')
+@section('title', 'Gestão de contatos')
 
 @section('content')
     <div class="container-fluid mt-2">
