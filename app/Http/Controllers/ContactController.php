@@ -41,19 +41,14 @@ class ContactController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $contact = Contact::find($id);
+        return view('contacts.edit-contact', [
+            'contact' => $contact
+        ]);
     }
 
     /**
@@ -61,7 +56,18 @@ class ContactController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string|max:20',
+            'cep'   => 'required|string|max:9',
+        ]);
+
+        $contact = Contact::findOrFail($id);
+        $contact->update($validated);
+
+        return redirect()->route('contatos.index')
+            ->with('success', 'Contato atualizado com sucesso!');
     }
 
     /**
