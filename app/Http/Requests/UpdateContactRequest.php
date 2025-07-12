@@ -3,29 +3,31 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateContactRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
             'name' => 'required|string|max:100',
-            'phone' => 'required|string|max:15',
-            'email' => 'required|email',
-            'cep' => ['required', 'string', 'max:9']
+            'phone' => [
+                'required',
+                'string',
+                'max:15',
+                Rule::unique('contacts')->ignore($this->contact?->id),
+            ],
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('contacts')->ignore($this->contact?->id),
+            ],
+            'cep' => ['required', 'string', 'size:8'],
         ];
     }
 
@@ -36,14 +38,16 @@ class UpdateContactRequest extends FormRequest
             'name.max' => 'O campo de nome pode ter no máximo 100 caracteres',
 
             'phone.required' => 'O campo Telefone é obrigatório',
+            'phone.unique' => 'Este número de telefone já está cadastrado.',
             'phone.max' => 'Número de telefone inválido',
 
             'email.required' => 'O campo e-mail é obrigatório.',
+            'email.unique' => 'Este e-mail já está cadastrado.',
             'email.email' => 'O e-mail informado não é válido.',
 
             'cep.required' => 'O campo CEP é obrigatório.',
             'cep.string' => 'O CEP deve ser uma sequência de caracteres.',
-            'cep.max' => 'O CEP deve ter no máximo 8 caracteres.',
+            'cep.size' => 'Preencha o campo de cep apenas com números (8 caracteres).',
         ];
     }
 }
