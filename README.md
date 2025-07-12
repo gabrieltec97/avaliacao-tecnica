@@ -54,7 +54,7 @@ No arquivo phpunit.xml adicione dentro de <php>:
 <env name="DB_PASSWORD" value="password"/>   
 ```
 
-Caso a aplicação não crie o banco de dados.
+Caso a aplicação não crie o banco de dados, acesse a aba de testes automatizados abaixo.
 
 7. Instale as dependências com o Composer em seu ambiente Docker:
 ```bash
@@ -104,7 +104,7 @@ CREATE DATABASE testing;
 docker ps
 ```
 
-<p>Em seguida acesse o terminal onde nosso banco de dados está rodando:</p>
+<p>Em seguida acesse o terminal onde nosso banco de dados está rodando (Se o nome original do projeto foi mantido, o nome do container será avaliacao-tecnica-mariadb-1):</p>
 
 ```bash
 docker exec -it NOME_DO_SEU_CONTAINER_DE_DB bash
