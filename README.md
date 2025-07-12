@@ -60,7 +60,11 @@ POSTGRES_VERSION=16
 ```
 9. Rode as migrations e seeders necessárias para dar a configuração inicial para o sistema executar corretamente.
 ```bash
-php (ou sail) artisan migrate --seed
+docker compose exec laravel.test php artisan migrate --seed
+```
+Ou caso você já esteja com seu ambiente parametrizado para utilizar o comando "sail" ou qualquer outro comando, utilize-o:
+```bash
+sail artisan migrate --seed
 ```
 10. Pronto! Agora é só acessar http://localhost
 
