@@ -85,7 +85,7 @@ sail artisan migrate --seed
 ```
 11. Pronto! Agora é só acessar http://localhost
 
-## 🌐 - Endpoint de contatos
+## 🌐 Endpoint de contatos
 <p>Foi solicitado que fosse criado endpoint que retorne, em formato JSON, todos os contatos cadastrados. Acesse em:</p>
 
 ```bash
