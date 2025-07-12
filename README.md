@@ -26,6 +26,12 @@ DB_DATABASE=laravel
 DB_USERNAME=root
 DB_PASSWORD=password
 ```
+
+Adicione ao final de seu arquivo .env:
+```bash
+WWWUSER=1000
+WWWGROUP=1000
+```
 6. Instale as dependências com o Composer em seu ambiente Docker:
 ```bash
 docker run --rm \
@@ -43,6 +49,14 @@ docker run --rm \
 8. Suba os contêineres do projeto:
 ```bash
 docker compose up -d
+```
+
+Pode acontecer de nesta etapa ocorrer algum tipo de erro dependendo de como está configurado o seu ambiente. Caso ocorra, adicione esta linha em seu arquivo .env:
+
+```bash
+NODE_VERSION=20
+MYSQL_CLIENT=mysql-client
+POSTGRES_VERSION=16
 ```
 9. Rode as migrations e seeders necessárias para dar a configuração inicial para o sistema executar corretamente.
 ```bash
