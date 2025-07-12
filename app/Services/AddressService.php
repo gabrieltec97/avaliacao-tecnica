@@ -41,4 +41,15 @@ class AddressService
             'state' => $addressData['uf'] ?? null,
         ];
     }
+
+    public function mergeAddressIntoData(array $data): ?array
+    {
+        $address = $this->getAddressFromCep($data['cep']);
+
+        if (!$address) {
+            return null;
+        }
+
+        return array_merge($data, $address);
+    }
 }
