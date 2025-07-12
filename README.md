@@ -17,7 +17,7 @@ cd avaliacao-tecnica
 ```bash
 cp .env.example .env
 ```
-5. Parametrize as variáveis de banco de dados em seu arquivo .env:
+5. Abra uma IDE ou editor de código e parametrize as variáveis de banco de dados em seu arquivo .env:
 ```bash
 DB_CONNECTION=mysql
 DB_HOST=mariadb
