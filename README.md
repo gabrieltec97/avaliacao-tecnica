@@ -70,8 +70,20 @@ sail artisan migrate --seed
 
 ## 📸 Screenshots
 
-<h4>Com o usuário de administrador, acesse o dashboard informativo com gráfico de entregas recebidas x retiradas ao longo dos meses.</h4>
+<h4>Página principal com todos os contatos cadastrados, juntamente com o campo de busca e novo contato.</h4>
 
-![Dashboard](assets/dashboard-parte1.png)
+![Dashboard](assets/index.png)
+
+<h4>Retorno da rota de API solicitada no desafio.</h4>
+
+![Dashboard](assets/api.png)
+
+<h4>Criação de novo contato.</h4>
+
+![Dashboard](assets/novo-contato.png)
+
+<h4>Edição de contato.</h4>
+
+![Dashboard](assets/editar-contato.png)
 
 
