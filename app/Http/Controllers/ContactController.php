@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreContactRequest;
+use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -20,29 +22,9 @@ class ContactController extends Controller
         return view('contacts.new-contact');
     }
 
-    public function store(Request $request)
+    public function store(StoreContactRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'phone' => 'required|string|max:15|unique:contacts,phone',
-            'email' => 'required|email|unique:contacts,email',
-            'cep' => ['required', 'string', 'max:8']
-        ],[
-            'name.required' => 'O campo "Nome" é obrigatório',
-            'name.max' => 'O campo de nome pode ter no máximo 100 caracteres',
-
-            'phone.required' => 'O campo Telefone é obrigatório',
-            'phone.unique' => 'Este número de telefone já está cadastrado.',
-            'phone.max' => 'Número de telefone inválido',
-
-            'email.required' => 'O campo e-mail é obrigatório.',
-            'email.email' => 'O e-mail informado não é válido.',
-            'email.unique' => 'Este e-mail já está cadastrado.',
-
-            'cep.required' => 'O campo CEP é obrigatório.',
-            'cep.string' => 'O CEP deve ser uma sequência de caracteres.',
-            'cep.max' => 'O CEP deve ter no máximo 8 caracteres.',
-        ]);
+        $validated = $request->validated();
 
         $cepClean = preg_replace('/[^0-9]/', '', $validated['cep']);
 
@@ -93,7 +75,7 @@ class ContactController extends Controller
         ]);
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateContactRequest $request, string $id)
     {
         $contact = Contact::findOrFail($id);
         $mail = trim($request->email);
@@ -109,25 +91,7 @@ class ContactController extends Controller
             return redirect()->back()->with('msg-error', 'Este número de telefone já está sendo utilizado.');
         }
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'phone' => 'required|string|max:15',
-            'email' => 'required|email',
-            'cep' => ['required', 'string', 'max:9']
-        ],[
-            'name.required' => 'O campo "Nome" é obrigatório',
-            'name.max' => 'O campo de nome pode ter no máximo 100 caracteres',
-
-            'phone.required' => 'O campo Telefone é obrigatório',
-            'phone.max' => 'Número de telefone inválido',
-
-            'email.required' => 'O campo e-mail é obrigatório.',
-            'email.email' => 'O e-mail informado não é válido.',
-
-            'cep.required' => 'O campo CEP é obrigatório.',
-            'cep.string' => 'O CEP deve ser uma sequência de caracteres.',
-            'cep.max' => 'O CEP deve ter no máximo 8 caracteres.',
-        ]);
+        $validated = $request->validated();
 
         $cepClean = preg_replace('/[^0-9]/', '', $validated['cep']);
 
@@ -161,6 +125,9 @@ class ContactController extends Controller
         }
 
         $validated['address'] = $addressData['logradouro'] ?? null;
+        $validated['neighborhood'] = $addressData['bairro'] ?? null;
+        $validated['city'] = $addressData['localidade'] ?? null;
+        $validated['state'] = $addressData['uf'] ?? null;
         $contact->update($validated);
 
         return redirect()->route('contatos.index')->with('msg-success', 'Contato atualizado com sucesso!');
