@@ -90,6 +90,14 @@ sail artisan migrate --seed
 
 <h4>Para rodar nossos testes, precisaremos de um banco de dados de testes. Caso a aplicação não crie automaticamente, podemos criá-lo manualmente:</h4>
 
+<h4>Caso você tenha uma ferramenta de administração de banco de dados como MySQL WorkBench ou Sequel Pro, basta se conectar ao banco e rodar o comando SQL:</h4>
+
+```bash
+CREATE DATABASE testing;
+```
+
+<h4>Caso não tenha, podemos criar diretamente com o Docker seguindo os passos abaixo:</h4>
+
 <p>Com o terminal aberto dentro da pasta de nosso projeto, primeiro descubra o nome do seu container de banco de dados:</p>
 
 ```bash
@@ -116,13 +124,13 @@ mariadb -u root -p
 CREATE DATABASE testing;
 ```
 
-<p>Agora dê o comando exit para sair do servidor MySQL/MariaDB:</p>
+<p>Dê o comando exit para sair do servidor MySQL/MariaDB:</p>
 
 ```bash
 exit
 ```
 
-<p>Agora dê o comando exit para sair do terminal onde o banco de dados está rodando:</p>
+<p>Dê o comando exit para sair do terminal onde o banco de dados está rodando:</p>
 
 ```bash
 exit
@@ -131,11 +139,9 @@ exit
 Para rodar os testes dê o comando:
 ```bash
 docker compose exec laravel.test php artisan test tests/Feature/ContactDestroyTest.php
-
-sail artisan test tests/Feature/ContactDestroyTest.php
 ```
 
-ou se você estiver com o laravel sail configurado:
+Ou se você estiver com o laravel sail configurado:
 
 ```bash
 sail artisan test tests/Feature/ContactDestroyTest.php
