@@ -63,19 +63,19 @@ docker run --rm \
     -v "$(pwd):/app" \
     composer install --ignore-platform-reqs
 ```
-7. Gere a chave da aplicação:
+8. Gere a chave da aplicação:
 ```bash
 docker run --rm \
     -v "$(pwd):/var/www/html" \
     php:8.3-fpm-alpine \
     php artisan key:generate
 ```
-8. Suba os contêineres do projeto:
+9. Suba os contêineres do projeto:
 ```bash
 docker compose up -d
 ```
 
-9. Rode as migrations e seeders necessárias para dar a configuração inicial para o sistema executar corretamente.
+10. Rode as migrations e seeders necessárias para dar a configuração inicial para o sistema executar corretamente.
 ```bash
 docker compose exec laravel.test php artisan migrate --seed
 ```
@@ -83,8 +83,63 @@ Ou caso você já esteja com seu ambiente parametrizado para utilizar o comando 
 ```bash
 sail artisan migrate --seed
 ```
-10. Pronto! Agora é só acessar http://localhost
+11. Pronto! Agora é só acessar http://localhost
 
+
+## 🔧📦Testes automatizados
+
+<h4>Para rodar nossos testes, precisaremos de um banco de dados de testes. Caso a aplicação não crie automaticamente, podemos criá-lo manualmente:</h4>
+
+<p>Com o terminal aberto dentro da pasta de nosso projeto, primeiro descubra o nome do seu container de banco de dados:</p>
+
+```bash
+docker ps
+```
+
+<p>Em seguida acesse o terminal onde nosso banco de dados está rodando:</p>
+
+```bash
+docker exec -it NOME_DO_SEU_CONTAINER_DE_DB bash
+```
+
+<p>Acesse o servidor MySQL/MariaDB:</p>
+
+```bash
+mariadb -u root -p
+```
+
+<p>Insira a senha: password</p>
+
+<p>Crie o banco de dados:</p>
+
+```bash
+CREATE DATABASE testing;
+```
+
+<p>Agora dê o comando exit para sair do servidor MySQL/MariaDB:</p>
+
+```bash
+exit
+```
+
+<p>Agora dê o comando exit para sair do terminal onde o banco de dados está rodando:</p>
+
+```bash
+exit
+```
+
+Para rodar os testes dê o comando:
+```bash
+docker compose exec laravel.test php artisan test tests/Feature/ContactDestroyTest.php
+
+sail artisan test tests/Feature/ContactDestroyTest.php
+```
+
+ou se você estiver com o laravel sail configurado:
+
+```bash
+sail artisan test tests/Feature/ContactDestroyTest.php
+```
 ## 📸 Screenshots
 
 <h4>Página principal com todos os contatos cadastrados, juntamente com o campo de busca e novo contato.</h4>
