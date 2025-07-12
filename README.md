@@ -31,8 +31,32 @@ Adicione ao final de seu arquivo .env:
 ```bash
 WWWUSER=1000
 WWWGROUP=1000
+
+NODE_VERSION=20
+MYSQL_CLIENT=mysql-client
+POSTGRES_VERSION=16
 ```
-6. Instale as dependências com o Composer em seu ambiente Docker:
+
+6. Para que nossos testes funcionem, vamos parametrizar a criação de seu banco de dados:
+
+No arquivo docker-compose.yml adicione esta linha em environment de mariadb:
+```bash
+MYSQL_ADDITIONAL_DATABASES: 'testing'
+```
+
+No arquivo phpunit.xml adicione dentro de <php>:
+```bash
+<env name="DB_CONNECTION" value="mysql"/>    
+<env name="DB_HOST" value="mariadb"/>         
+<env name="DB_PORT" value="3306"/>          
+<env name="DB_DATABASE" value="testing"/>    
+<env name="DB_USERNAME" value="root"/>       
+<env name="DB_PASSWORD" value="password"/>   
+```
+
+Caso a aplicação não crie o banco de dados.
+
+7. Instale as dependências com o Composer em seu ambiente Docker:
 ```bash
 docker run --rm \
     -u "$(id -u):$(id -g)" \
@@ -51,13 +75,6 @@ docker run --rm \
 docker compose up -d
 ```
 
-Pode acontecer de nesta etapa ocorrer algum tipo de erro dependendo de como está configurado o seu ambiente. Caso ocorra, adicione esta linha em seu arquivo .env:
-
-```bash
-NODE_VERSION=20
-MYSQL_CLIENT=mysql-client
-POSTGRES_VERSION=16
-```
 9. Rode as migrations e seeders necessárias para dar a configuração inicial para o sistema executar corretamente.
 ```bash
 docker compose exec laravel.test php artisan migrate --seed
