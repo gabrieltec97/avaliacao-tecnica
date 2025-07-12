@@ -26,24 +26,29 @@ DB_DATABASE=laravel
 DB_USERNAME=root
 DB_PASSWORD=password
 ```
-4. Instale as dependências com o Composer:
+6. Instale as dependências com o Composer em seu ambiente Docker:
 ```bash
-composer install
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/app" \
+    composer install --ignore-platform-reqs
 ```
-5. Gere a chave de API do Laravel.
+7. Gere a chave da aplicação:
 ```bash
-php (ou sail) artisan key:generate
+docker run --rm \
+    -v "$(pwd):/var/www/html" \
+    php:8.3-fpm-alpine \
+    php artisan key:generate
 ```
-6. Parametrize crie seu banco de dados e preenchendo com as variáveis de nome do banco, usuário, senha e porta no arquivo .env.
-7. Rode as migrations e seeders necessárias para dar a configuração inicial para o sistema executar corretamente.
+8. Suba os contêineres do projeto:
+```bash
+docker compose up -d
+```
+9. Rode as migrations e seeders necessárias para dar a configuração inicial para o sistema executar corretamente.
 ```bash
 php (ou sail) artisan migrate --seed
 ```
-8. Inicie o servidor.
-```bash
-php (ou sail) artisan serve
-```
-9. Pronto! Agora é só acessar http://localhost:8000
+10. Pronto! Agora é só acessar http://localhost
 
 ## 📸 Screenshots
 
