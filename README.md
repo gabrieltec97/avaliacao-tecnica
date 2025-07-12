@@ -1,6 +1,6 @@
 ## 📘 Descrição
 
-Avaliação técnica solicitada em 08/07/2025.
+Avaliação técnica solicitada em 08/07/2025 com instruções de como rodar o projeto, como realizar testes e capturas de tela.
 
 ## 🛠️ Como rodar o projeto
 
