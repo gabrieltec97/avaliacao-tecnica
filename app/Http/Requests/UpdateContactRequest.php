@@ -19,7 +19,7 @@ class UpdateContactRequest extends FormRequest
             'phone' => [
                 'required',
                 'string',
-                'max:15',
+                'size:11',
                 Rule::unique('contacts')->ignore($this->contact?->id),
             ],
             'email' => [
@@ -39,7 +39,7 @@ class UpdateContactRequest extends FormRequest
 
             'phone.required' => 'O campo Telefone é obrigatório',
             'phone.unique' => 'Este número de telefone já está cadastrado.',
-            'phone.max' => 'Número de telefone inválido',
+            'phone.size' => 'Número de telefone inválido',
 
             'email.required' => 'O campo e-mail é obrigatório.',
             'email.unique' => 'Este e-mail já está cadastrado.',

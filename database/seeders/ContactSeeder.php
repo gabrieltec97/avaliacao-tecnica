@@ -18,9 +18,9 @@ class ContactSeeder extends Seeder
         foreach (range(1, 5) as $i) {
             Contact::create([
                 'name'         => $faker->name,
-                'phone'        => $faker->cellphoneNumber,
+                'phone'        => $faker->numerify('###########'),
                 'email'        => $faker->unique()->safeEmail,
-                'cep'          => $faker->postcode,
+                'cep'          => $faker->randomNumber(8),
                 'address'      => $faker->streetAddress,
                 'neighborhood' => $faker->streetName,
                 'city'         => $faker->city,

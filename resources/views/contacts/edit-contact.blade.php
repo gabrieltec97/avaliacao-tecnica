@@ -28,7 +28,7 @@
 
                                     <div class="col-12 col-md-3 mt-3 mt-lg-0">
                                         <span class="font-weight-bold modal-label">Telefone:</span>
-                                        <input type="tel" name="phone" value="{{ $contact->phone }}" placeholder="Digite o telefone" class="form-control mt-2" required>
+                                        <input type="number" name="phone" value="{{ $contact->phone }}" placeholder="Digite o telefone" class="form-control mt-2" required>
                                     </div>
 
                                     <div class="col-12 col-md-3 mt-3 mt-lg-0">

@@ -27,7 +27,7 @@
 
                                     <div class="col-12 col-md-3 mt-3 mt-lg-0">
                                         <span class="font-weight-bold modal-label">Telefone:</span>
-                                        <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="Digite o telefone" class="form-control mt-2">
+                                        <input type="number" name="phone" value="{{ old('phone') }}" placeholder="ex.: 21997467377" class="form-control mt-2">
                                     </div>
 
                                     <div class="col-12 col-md-3 mt-3 mt-lg-0">

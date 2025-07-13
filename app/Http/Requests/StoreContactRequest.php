@@ -15,7 +15,7 @@ class StoreContactRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
-            'phone' => 'required|string|max:15|unique:contacts,phone',
+            'phone' => 'required|string|size:11|unique:contacts,phone',
             'email' => 'required|email|unique:contacts,email',
             'cep' => ['required', 'string', 'size:8'],
         ];
@@ -29,7 +29,7 @@ class StoreContactRequest extends FormRequest
 
             'phone.required' => 'O campo Telefone é obrigatório',
             'phone.unique' => 'Este número de telefone já está cadastrado.',
-            'phone.max' => 'Número de telefone inválido',
+            'phone.size' => 'Número de telefone inválido',
 
             'email.required' => 'O campo e-mail é obrigatório.',
             'email.email' => 'O e-mail informado não é válido.',
