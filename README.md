@@ -4,7 +4,7 @@ Avaliação técnica solicitada em 08/07/2025 com instruções de como rodar o p
 
 ## 🛠️ Como rodar o projeto
 
-1. Tenha o ambiente Docker parametrizado em sua máquina juntamente com virtualização e WSL.
+1. Tenha o ambiente Docker parametrizado em sua máquina juntamente com WSL.
 2. Acesse o terminal em sua pasta de projetos do Docker e clone o repositório:
 ```bash
 git clone https://github.com/gabrieltec97/avaliacao-tecnica.git
@@ -144,13 +144,13 @@ exit
 
 Para rodar os testes dê o comando:
 ```bash
-docker compose exec laravel.test php artisan test tests/Feature/ContactDestroyTest.php
+docker compose exec laravel.test php artisan test tests/Feature/NomeDoTeste.php
 ```
 
 Ou se você estiver com o laravel sail configurado:
 
 ```bash
-sail artisan test tests/Feature/ContactDestroyTest.php
+sail artisan test tests/Feature/NomeDoTeste.php
 ```
 ## 📸 Screenshots
 
