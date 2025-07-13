@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class ApiContactController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         try {
             $contacts = Contact::all();
